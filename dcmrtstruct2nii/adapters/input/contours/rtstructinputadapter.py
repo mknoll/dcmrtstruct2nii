@@ -18,7 +18,7 @@ class RtStructInputAdapter(AbstractInputAdapter):
                     return [el.value]
                 elif str(el.name).lower() == str(tag).lower():
                     return [el.value]
-                
+
         return retvals
 
     def ingest(self, input_file, maskname_pattern, skip_contours=False):  # noqa: C901
@@ -29,7 +29,8 @@ class RtStructInputAdapter(AbstractInputAdapter):
             :return: multidimensional array with ROI(s)
         '''
         try:
-            rt_struct_image = pydicom.read_file(input_file)
+            #rt_struct_image = pydicom.read_file(input_file)
+            rt_struct_image = pydicom.dcmread(input_file)
 
             if not hasattr(rt_struct_image, 'StructureSetROISequence'):
                 raise InvalidDicomError()
@@ -79,8 +80,8 @@ class RtStructInputAdapter(AbstractInputAdapter):
                     continue
 
                 maskname.append(f'UNK')
-                
-                
+
+
             if len(maskname) > 0:
                 contour_data['maskname'] = '-'.join(maskname)
 
